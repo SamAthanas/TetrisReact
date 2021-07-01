@@ -7,14 +7,13 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function Tetris() {
     const [activeBlocks,setActiveBlocks] = useState(null);
-    const [container,setContainer] = useState();
 
-    const [activeBlockPosition,setActiveBlockPosition] = useState(0);
     const [ keysDown ] = UseKeyPress();
 
     const frameRef = useRef(null);
     const keysRef = useRef(keysDown);
     const positionRef = useRef(0);
+    const directionRef = useRef(0);
 
     const [, updateState] = useState();
     const forceUpdate = useCallback(() => updateState({}), []);
@@ -29,13 +28,30 @@ export default function Tetris() {
             const movingRight = keysRef.current["39"];
             
             if (movingRight) {
-                console.log("moving right");
-                positionRef.current ++;
+                if (positionRef.current > 90) {
+                    positionRef.current = 90;
+                }
+
+                else {
+                    positionRef.current += .5;
+                    directionRef.current = 1;
+                }
             }
             
-            if (movingLeft) {
-                console.log("moving left");
-                positionRef.current --;
+            else if (movingLeft) {
+                if (positionRef.current - .5 < 0) {
+                    positionRef.current = 0;
+                }
+
+                else {
+                    positionRef.current -= .5;
+                    directionRef.current = -1;
+                }
+            }
+            
+            else {
+                const target = Math.round(positionRef.current / 10) * 10;
+                positionRef.current += (target - positionRef.current) * 0.05;
             }
 
             forceUpdate();
