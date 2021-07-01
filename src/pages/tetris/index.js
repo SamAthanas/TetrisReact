@@ -3,7 +3,7 @@ import Block from "../../components/block";
 
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from "../../constants";
 import { UseKeyPress } from "../../hooks/KeyPress.js";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function Tetris() {
     const [activeBlocks,setActiveBlocks] = useState(null);
@@ -11,22 +11,34 @@ export default function Tetris() {
 
     const [activeBlockPosition,setActiveBlockPosition] = useState(0);
     const [ keysDown ] = UseKeyPress();
+
     const frameRef = useRef(null);
+    const keysRef = useRef(keysDown);
+    const positionRef = useRef(0);
+
+    const [, updateState] = useState();
+    const forceUpdate = useCallback(() => updateState({}), []);
+
+    useEffect( () => {
+        keysRef.current = keysDown;
+    },[keysDown]);
     
     useEffect( () => {
         const animate = () => {
-            const movingLeft = keysDown.includes(37);
-            const movingRight = keysDown.includes(39);
+            const movingLeft = keysRef.current["37"];
+            const movingRight = keysRef.current["39"];
             
-            if (movingRight)
+            if (movingRight) {
                 console.log("moving right");
-
-            // setActiveBlockPosition(50);
-            //console.log("animating");
+                positionRef.current ++;
+            }
             
-            setActiveBlocks(
-                
-            );
+            if (movingLeft) {
+                console.log("moving left");
+                positionRef.current --;
+            }
+
+            forceUpdate();
             
             frameRef.current = requestAnimationFrame(animate);
         }
@@ -36,13 +48,13 @@ export default function Tetris() {
         return () => {
             cancelAnimationFrame(frameRef.current);
         };
-    },[keysDown]);
+    },[]);
 
     const width = CANVAS_WIDTH,height = CANVAS_HEIGHT;
     return (
         <div className = {styles.wrapper}>
             <div className = {styles.container} style = {{width,height}}>
-            <Block position = {activeBlockPosition}/>
+            <Block position = {positionRef.current}/>
             </div>
         </div>
     );
