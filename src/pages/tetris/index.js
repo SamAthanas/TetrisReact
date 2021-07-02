@@ -1,20 +1,20 @@
 import styles from "./tetris.module.scss";
 import Block from "../../components/block";
 
-import { CANVAS_WIDTH, CANVAS_HEIGHT, BLOCK_SIZE, GRID_SIZE, MOVE_SPEED, ROW_COUNT, COLUMN_COUNT, TetrisUtility } from "../../constants";
+import { CANVAS_WIDTH, CANVAS_HEIGHT, BLOCK_SIZE, GRID_SIZE, MOVE_SPEED, MOVE_SPEED_DOWN, TetrisUtility, ROW_COUNT } from "../../constants";
 import { UseKeyPress } from "../../hooks/KeyPress.js";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function Tetris() {
     const [activeBlocks,setActiveBlocks] = useState(null);
-    const [grid,setGrid] = useState([]);
+    const [gridBlocks,setGridBlocks] = useState([]);
 
     const [ keysDown ] = UseKeyPress();
 
     const frameRef = useRef(null);
     const keysRef = useRef(keysDown);
     const positionRef = useRef(0);
-    const directionRef = useRef(0);
+    const positionYRef = useRef(0);
 
     const [, updateState] = useState();
     const forceUpdate = useCallback(() => updateState({}), []);
@@ -31,6 +31,25 @@ export default function Tetris() {
         const animate = () => {
             const movingLeft = keysRef.current["37"];
             const movingRight = keysRef.current["39"];
+            const movingDown = keysRef.current["40"];
+
+            const target = Math.round(positionRef.current / GRID_SIZE) * GRID_SIZE;
+            const gridPosition = TetrisUtility.getGridPosition(target,positionYRef.current);
+            const targetY = ( () => {
+                for(let i = 0; i < ROW_COUNT;i++) {
+                    if (TetrisUtility.grid[gridPosition[0]][i]) {
+                        return i * BLOCK_SIZE - BLOCK_SIZE;
+                    }
+                }
+
+                return ROW_COUNT * BLOCK_SIZE - BLOCK_SIZE;
+            })();
+
+            const getCurrentBlocks = () => {
+                return [
+                    <Block position = {positionRef.current} positionY = {positionYRef.current}/>
+                ];
+            }
             
             if (movingRight) {
                 if (positionRef.current > CANVAS_WIDTH - BLOCK_SIZE) {
@@ -38,10 +57,8 @@ export default function Tetris() {
                 }
 
                 else {
-                    positionRef.current += MOVE_SPEED;
-                    directionRef.current = 1;
+                    positionRef.current += movingDown ? MOVE_SPEED * 2 : MOVE_SPEED;
                 }
-
             }
             
             else if (movingLeft) {
@@ -50,17 +67,30 @@ export default function Tetris() {
                 }
 
                 else {
-                    positionRef.current -= MOVE_SPEED;
-                    directionRef.current = -1;
+                    positionRef.current -= movingDown ? MOVE_SPEED * 2 : MOVE_SPEED;
                 }
             }
             
             else {
-                const target = Math.round(positionRef.current / GRID_SIZE) * GRID_SIZE;
-
                 positionRef.current += (target - positionRef.current) * 0.05;
             }
 
+            let currentBlocks = getCurrentBlocks();
+            
+            if (!TetrisUtility.groundCollisionCheck(target,positionYRef.current + BLOCK_SIZE) ) {
+                positionYRef.current += movingDown ? MOVE_SPEED_DOWN * 4 : MOVE_SPEED_DOWN;
+            }
+            else {
+                positionRef.current = target;
+                positionYRef.current = targetY;
+                currentBlocks = getCurrentBlocks();
+
+                setGridBlocks(prev => [...prev,...currentBlocks] );
+                TetrisUtility.setGridBlock(...gridPosition);
+                positionYRef.current = 0;
+            }
+
+            setActiveBlocks(currentBlocks);
             forceUpdate();
             
             frameRef.current = requestAnimationFrame(animate);
@@ -77,7 +107,8 @@ export default function Tetris() {
     return (
         <div className = {styles.wrapper}>
             <div className = {styles.container} style = {{width,height}}>
-            <Block position = {positionRef.current}/>
+                {activeBlocks}
+                {gridBlocks}
             </div>
         </div>
     );

@@ -9,6 +9,7 @@ export default function Block(props) {
             style = {
                 {
                     left:`${props.position}px`,
+                    top:`${props.positionY}px`,
                     width:BLOCK_SIZE,
                     height:BLOCK_SIZE
                 }

@@ -1,10 +1,12 @@
 export const CANVAS_WIDTH = 560;
-export const CANVAS_HEIGHT = 750;
+export const CANVAS_HEIGHT = 700;
 export const BLOCK_SIZE = 35;
 export const ROW_COUNT = parseInt(CANVAS_HEIGHT / BLOCK_SIZE);
 export const COLUMN_COUNT = parseInt(CANVAS_WIDTH / BLOCK_SIZE);
 export const GRID_SIZE = BLOCK_SIZE;
 export const MOVE_SPEED = 3.5;
+export const MOVE_SPEED_DOWN = 1;
+
 
 export class TetrisUtility {
     static grid = [];
@@ -16,14 +18,25 @@ export class TetrisUtility {
     }
 
     static getGridPosition(posX,posY) {
-        const arrayX = Math.floor(posX / (CANVAS_WIDTH / COLUMN_COUNT) );
-        const arrayY = Math.floor(posY / (CANVAS_HEIGHT / ROW_COUNT) );
+        const arrayX = Math.round(posX / (CANVAS_WIDTH / COLUMN_COUNT) );
+        const arrayY = Math.round(posY / (CANVAS_HEIGHT / ROW_COUNT) );
         
         return [arrayX,arrayY];
     }
 
-    static groundCollisionCheck(posY) {
-        const [,gridPositionY] = TetrisUtility.getGridPosition(0,posY + 10);
+    static setGridBlock(posX,posY) {
+        TetrisUtility.grid[posX][posY] = true;
+    }
+
+    static groundCollisionCheck(posX,posY) {
+        const [gridPositionX,gridPositionY] = TetrisUtility.getGridPosition(posX,posY);
+
+        if (TetrisUtility.grid[gridPositionX][gridPositionY]) {
+            if (gridPositionY <= 1) {
+                console.log("game over");
+            }
+            return true;
+        }
 
         return gridPositionY >= ROW_COUNT;
     }
