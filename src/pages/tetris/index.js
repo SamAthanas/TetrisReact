@@ -18,6 +18,7 @@ export default function Tetris() {
     const colorRef = useRef("red");
     const currentBlockIndexRef = useRef(0);
     const currentBlockRotateRef = useRef(0);
+    const currentBlockData = useRef({});
 
     const [, updateState] = useState();
     const forceUpdate = useCallback(() => updateState({}), []);
@@ -31,16 +32,78 @@ export default function Tetris() {
 
         if (keysDown["32"]) {
             currentBlockRotateRef.current = (currentBlockRotateRef.current + 1) % BLOCKS[currentBlockIndexRef.current].length;
+            recalculcateBlocks();
         }
     },[keysDown]);
     
+    const getBlockArray = useCallback( () => {
+        return BLOCKS[currentBlockIndexRef.current][currentBlockRotateRef.current];
+    });
+
+    const recalculcateBlocks = useCallback( () => {
+        const blockArray = getBlockArray();
+        const width = [...blockArray].reduce( (acc,elem) => {
+            if (elem[0] < acc[0]) {
+                return [elem[0],acc[1]];
+            }
+
+            if (elem[0] > acc[1]) {
+                return [acc[0],elem[0]];
+            }
+
+            return acc;
+        },[0,0]);
+
+        currentBlockData.current = {
+            leftOffset:width[0],
+            rightOffset:width[1]
+        };
+
+        moveBlocks(undefined,true);
+        moveBlocks(undefined,false,true);
+    });
+
+    const moveBlocks = useCallback( (target,movingLeft,movingRight) => {
+        if (movingRight) {
+            if (positionRef.current + currentBlockData.current.rightOffset > CANVAS_WIDTH - BLOCK_SIZE) {
+                positionRef.current = CANVAS_WIDTH - BLOCK_SIZE - currentBlockData.current.rightOffset;
+            }
+
+            else {
+                positionRef.current += MOVE_SPEED;
+            }
+        }
+        
+        else if (movingLeft) {
+            if (positionRef.current + currentBlockData.current.leftOffset < 0) {
+                positionRef.current = 0 - currentBlockData.current.leftOffset;
+            }
+
+            else {
+                positionRef.current -= MOVE_SPEED;
+            }
+        }
+        
+        else {
+            positionRef.current += (target - positionRef.current) * 0.05;
+        }
+    });
+    
     useEffect( () => {
+
+        const setCurrentBlocks = () => {
+            const blockIndex = TetrisUtility.getRandomBlock();
+            currentBlockIndexRef.current = blockIndex;
+
+            recalculcateBlocks();
+        }
+
         const animate = () => {
             const movingLeft = keysRef.current["37"];
             const movingRight = keysRef.current["39"];
             const movingDown = keysRef.current["40"];
 
-            const blockArray = BLOCKS[currentBlockIndexRef.current][currentBlockRotateRef.current];
+            const blockArray = getBlockArray();
 
             const target = Math.round(positionRef.current / GRID_SIZE) * GRID_SIZE;
             const targetY = ( () => {
@@ -69,34 +132,7 @@ export default function Tetris() {
                 return arr;
             }
 
-            const setCurrentBlocks = () => {
-                const blockIndex = TetrisUtility.getRandomBlock();
-                currentBlockIndexRef.current = blockIndex;
-            }
-            
-            if (movingRight) {
-                if (positionRef.current > CANVAS_WIDTH - BLOCK_SIZE) {
-                    positionRef.current = CANVAS_WIDTH - BLOCK_SIZE;
-                }
-
-                else {
-                    positionRef.current += MOVE_SPEED;
-                }
-            }
-            
-            else if (movingLeft) {
-                if (positionRef.current - .5 < 0) {
-                    positionRef.current = 0;
-                }
-
-                else {
-                    positionRef.current -= MOVE_SPEED;
-                }
-            }
-            
-            else {
-                positionRef.current += (target - positionRef.current) * 0.05;
-            }
+            moveBlocks(target,movingLeft,movingRight);
 
             let currentBlocks = getCurrentBlocks();
             const collisionOffsets = TetrisUtility.groundCollisionCheck(target,positionYRef.current + BLOCK_SIZE,blockArray);
@@ -126,6 +162,7 @@ export default function Tetris() {
             frameRef.current = requestAnimationFrame(animate);
         }
         
+        setCurrentBlocks();
         animate();
             
         return () => {

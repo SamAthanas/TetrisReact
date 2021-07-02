@@ -26,7 +26,6 @@ export const BLOCKS = [
     ]
 ];
 
-
 export class TetrisUtility {
     static grid = [];
     
