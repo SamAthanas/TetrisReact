@@ -23,6 +23,14 @@ export const BLOCKS = [
             [0,BLOCK_SIZE],
             [0,-BLOCK_SIZE * 2],
         ]
+    ],
+    [
+        [
+            [0,0],
+            [BLOCK_SIZE,0],
+            [0,BLOCK_SIZE],
+            [BLOCK_SIZE,BLOCK_SIZE]
+        ]
     ]
 ];
 
@@ -33,8 +41,6 @@ export class TetrisUtility {
         for(let i = 0; i < ROW_COUNT;i++) {
             TetrisUtility.grid.push(Array(COLUMN_COUNT).fill(false) );
         }
-        
-        TetrisUtility.getRandomBlock();
     }
 
     static constrain(num,min,max) {
@@ -72,6 +78,6 @@ export class TetrisUtility {
     }
 
     static getRandomBlock() {
-        return (Math.random() * (BLOCKS.length - 1));
+        return (Math.round(Math.random() ) * (BLOCKS.length - 1));
     }
 }

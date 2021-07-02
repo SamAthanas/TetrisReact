@@ -37,7 +37,8 @@ export default function Tetris() {
     },[keysDown]);
     
     const getBlockArray = useCallback( () => {
-        return BLOCKS[currentBlockIndexRef.current][currentBlockRotateRef.current];
+        const shape = BLOCKS[currentBlockIndexRef.current];
+        return shape[currentBlockRotateRef.current % shape.length];
     });
 
     const recalculcateBlocks = useCallback( () => {
@@ -91,7 +92,7 @@ export default function Tetris() {
     
     useEffect( () => {
 
-        const setCurrentBlocks = () => {
+        const selectNextBlock = () => {
             const blockIndex = TetrisUtility.getRandomBlock();
             currentBlockIndexRef.current = blockIndex;
 
@@ -140,20 +141,26 @@ export default function Tetris() {
             if (!collisionOffsets) {
                 positionYRef.current += movingDown ? MOVE_SPEED_DOWN * 4 : MOVE_SPEED_DOWN;
             }
+
+            // On Collision Land
             else {
                 positionRef.current = target;
                 positionYRef.current = targetY[collisionOffsets[1]] - collisionOffsets[0][1];
                 currentBlocks = getCurrentBlocks();
 
+                // Set the grid matrix of occupied spaces
                 for(const pos of blockArray) {
                     const position = TetrisUtility.getGridPosition(target + pos[0],positionYRef.current + pos[1]);
                     TetrisUtility.setGridBlock(...position);
                 }
                 
                 setGridBlocks(prev => [...prev,...currentBlocks] );
-                positionYRef.current = 0;
+                positionYRef.current = 0; // Reset Y Axis
 
                 colorRef.current = COLORS[Math.round(Math.random() * (COLORS.length - 1))];
+
+                //TODO: Testing, pick random block after collision
+                selectNextBlock();
             }
 
             setActiveBlocks(currentBlocks);
@@ -162,7 +169,7 @@ export default function Tetris() {
             frameRef.current = requestAnimationFrame(animate);
         }
         
-        setCurrentBlocks();
+        selectNextBlock();
         animate();
             
         return () => {
