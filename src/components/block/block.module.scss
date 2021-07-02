@@ -20,4 +20,18 @@ $themeColours: (
             @include block-color($i);
         }
     }
+
+    &:global(.destroy) {
+        filter:url(#glitch);
+        // Transition out effect
+        @keyframes block-destroy {
+            to {
+                transform:scale(1,0);
+                transform-origin:bottom;
+                opacity:0;
+            }
+        }
+
+        animation:block-destroy 650ms infinite;
+    }
 }

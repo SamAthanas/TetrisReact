@@ -1,8 +1,12 @@
 import Tetris from "./pages/tetris";
 
+import { GlitchRaw } from "./constants/filters";
+
 function App() {
-    return (
+    return (<>
         <Tetris/>
+        {GlitchRaw()}
+        </>
     );
 }
 

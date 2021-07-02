@@ -5,7 +5,8 @@ export const ROW_COUNT = parseInt(CANVAS_HEIGHT / BLOCK_SIZE);
 export const COLUMN_COUNT = parseInt(CANVAS_WIDTH / BLOCK_SIZE);
 export const GRID_SIZE = BLOCK_SIZE;
 export const MOVE_SPEED = 3.5;
-export const MOVE_SPEED_DOWN = 1;
+export const MOVE_SPEED_DOWN = 0.2;
+export const MOVE_SPEED_DOWN_FAST = 3;
 
 export const COLORS = ["red","pink","orange","blue"];
 
@@ -160,8 +161,8 @@ export class TetrisUtility {
         return [arrayX,arrayY];
     }
 
-    static setGridBlock(posX,posY) {
-        TetrisUtility.grid[posX][posY] = true;
+    static setGridBlock(block,posX,posY) {
+        TetrisUtility.grid[posX][posY] = block;
     }
 
     static groundCollisionCheck(posX,posY,blockArray) {
@@ -185,5 +186,35 @@ export class TetrisUtility {
 
     static getRandomBlock() {
         return (Math.round(Math.random() ) * (BLOCKS.length - 1));
+    }
+
+    static getRowsToClear() {
+        let rows = [];
+        for(let i = 0; i < TetrisUtility.grid.length;i++) {
+            let count = 0;
+            for(let j = 0; j < TetrisUtility.grid[i].length;j++) {
+                if (TetrisUtility.grid[j][i]) {
+                    count++;
+                }
+            }
+
+            if (count >= TetrisUtility.grid[i].length) {
+                rows.push(i);
+            }
+        }
+
+        return rows;
+    }
+
+    static clearRows() {
+        const rows = TetrisUtility.getRowsToClear();
+        if (rows) {
+            for(const row of rows) {
+                console.log("query row" + row);
+                document.querySelectorAll(`.y${row}`).forEach(elem => {
+                    elem.classList.add("destroy");
+                })
+            }
+        }
     }
 }

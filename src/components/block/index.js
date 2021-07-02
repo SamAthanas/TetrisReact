@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 export default function Block(props) {
     return (
         <div 
-            className = {`${styles.block} ${props.color}`}
+            className = {`${styles.block} ${props.color} ${props.className}`}
             style = {
                 {
                     left:`${props.position + (props.offsetX || 0)}px`,
