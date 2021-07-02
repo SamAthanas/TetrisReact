@@ -4,11 +4,13 @@ export const UseKeyPress = () => {
     const [keysDown,setKeysDown] = useState({});
 
     const validKeyCode = code => {
-        return ["32","37","39","40"].includes(code);
+        return ["32","37","39","40","65","68","83","38","17"].includes(code);
     }
 
     const handleKeyDown = evt => {
         const code = "" + evt.keyCode;
+
+        console.log(code);
 
         if (validKeyCode(code) && !keysDown[code]) {
             setKeysDown(prev => {

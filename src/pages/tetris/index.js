@@ -22,6 +22,7 @@ export default function Tetris() {
     const currentBlockIndexRef = useRef(0);
     const currentBlockRotateRef = useRef(0);
     const currentBlockData = useRef({});
+    const hardDropRef = useRef(false);
 
     const [, updateState] = useState();
     const forceUpdate = useCallback(() => updateState({}), []);
@@ -40,6 +41,10 @@ export default function Tetris() {
                 currentBlockRotateRef.current = (currentBlockRotateRef.current + 1) % BLOCKS[currentBlockIndexRef.current].length;
                 recalculcateBlocks();
             }
+        }
+
+        if (keysDown["38"] || keysDown["17"]) {
+            hardDropRef.current = true;
         }
     },[keysDown]);
     
@@ -127,9 +132,10 @@ export default function Tetris() {
         }
 
         const animate = () => {
-            const movingLeft = keysRef.current["37"];
-            const movingRight = keysRef.current["39"];
-            const movingDown = keysRef.current["40"];
+            const movingLeft = keysRef.current["37"] || keysRef.current["65"];
+            const movingRight = keysRef.current["39"] || keysRef.current["68"];
+            const movingDown = keysRef.current["40"] || keysRef.current["83"];
+            const hardDrop = keysRef.current["38"] || keysRef.current["17"];
 
             const blockArray = getBlockArray();
 
@@ -168,7 +174,17 @@ export default function Tetris() {
             moveBlocks(target,movingLeft,movingRight);
 
             let currentBlocks = getCurrentBlocks();
-            const collisionOffsets = TetrisUtility.groundCollisionCheck(target,positionYRef.current + BLOCK_SIZE,blockArray);
+
+            let collisionOffsets;
+            let dropOffset = 0;
+            do {
+                collisionOffsets = TetrisUtility.groundCollisionCheck(target,positionYRef.current + BLOCK_SIZE + dropOffset,blockArray);
+                if (hardDropRef.current) {
+                    dropOffset += BLOCK_SIZE;
+                }
+            }
+            while(hardDropRef.current && !collisionOffsets);
+            hardDropRef.current = false;
 
             if (!collisionOffsets) {
                 positionYRef.current += movingDown ? MOVE_SPEED_DOWN * 4 : MOVE_SPEED_DOWN;
