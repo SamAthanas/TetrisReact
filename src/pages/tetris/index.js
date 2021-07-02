@@ -1,7 +1,7 @@
 import styles from "./tetris.module.scss";
 import Block from "../../components/block";
 
-import { CANVAS_WIDTH, CANVAS_HEIGHT, BLOCK_SIZE, GRID_SIZE, MOVE_SPEED, MOVE_SPEED_DOWN, TetrisUtility, ROW_COUNT } from "../../constants";
+import { COLORS, CANVAS_WIDTH, CANVAS_HEIGHT, BLOCK_SIZE, GRID_SIZE, MOVE_SPEED, MOVE_SPEED_DOWN, TetrisUtility, ROW_COUNT } from "../../constants";
 import { UseKeyPress } from "../../hooks/KeyPress.js";
 import { useCallback, useEffect, useRef, useState } from "react";
 
@@ -15,6 +15,7 @@ export default function Tetris() {
     const keysRef = useRef(keysDown);
     const positionRef = useRef(0);
     const positionYRef = useRef(0);
+    const colorRef = useRef("red");
 
     const [, updateState] = useState();
     const forceUpdate = useCallback(() => updateState({}), []);
@@ -47,7 +48,7 @@ export default function Tetris() {
 
             const getCurrentBlocks = () => {
                 return [
-                    <Block position = {positionRef.current} positionY = {positionYRef.current}/>
+                    <Block position = {positionRef.current} positionY = {positionYRef.current} color = {colorRef.current}/>
                 ];
             }
             
@@ -88,6 +89,8 @@ export default function Tetris() {
                 setGridBlocks(prev => [...prev,...currentBlocks] );
                 TetrisUtility.setGridBlock(...gridPosition);
                 positionYRef.current = 0;
+
+                colorRef.current = COLORS[Math.round(Math.random() * (COLORS.length - 1))];
             }
 
             setActiveBlocks(currentBlocks);

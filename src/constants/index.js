@@ -7,6 +7,7 @@ export const GRID_SIZE = BLOCK_SIZE;
 export const MOVE_SPEED = 3.5;
 export const MOVE_SPEED_DOWN = 1;
 
+export const COLORS = ["red","pink","orange"];
 
 export class TetrisUtility {
     static grid = [];

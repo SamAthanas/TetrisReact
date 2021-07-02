@@ -1,9 +1,21 @@
+$themeColours: (
+    "pink": #DC51AC,
+    "red": #D64651,
+    "orange": #E55937,
+);
+
 .block {
     @mixin block-color($col) {
         background:radial-gradient(lighten($col,20%),$col);
         box-shadow:inset 0 0 5px white;
     }
 
+    background:black;
     position:absolute;
-    @include block-color(red);
+
+    @each $themeColour, $i in $themeColours {
+        &:global(.#{$themeColour}) {
+            @include block-color($i);
+        }
+    }
 }
