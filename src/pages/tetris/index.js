@@ -1,12 +1,13 @@
 import styles from "./tetris.module.scss";
 import Block from "../../components/block";
 
-import { CANVAS_WIDTH, CANVAS_HEIGHT, BLOCK_SIZE, GRID_SIZE, MOVE_SPEED } from "../../constants";
+import { CANVAS_WIDTH, CANVAS_HEIGHT, BLOCK_SIZE, GRID_SIZE, MOVE_SPEED, ROW_COUNT, COLUMN_COUNT, TetrisUtility } from "../../constants";
 import { UseKeyPress } from "../../hooks/KeyPress.js";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function Tetris() {
     const [activeBlocks,setActiveBlocks] = useState(null);
+    const [grid,setGrid] = useState([]);
 
     const [ keysDown ] = UseKeyPress();
 
@@ -17,6 +18,10 @@ export default function Tetris() {
 
     const [, updateState] = useState();
     const forceUpdate = useCallback(() => updateState({}), []);
+
+    useEffect( () => {
+        TetrisUtility.initTetrisArray();
+    },[]);
 
     useEffect( () => {
         keysRef.current = keysDown;
