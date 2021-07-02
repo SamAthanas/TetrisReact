@@ -10,8 +10,6 @@ export const UseKeyPress = () => {
     const handleKeyDown = evt => {
         const code = "" + evt.keyCode;
 
-        console.log(code);
-
         if (validKeyCode(code) && !keysDown[code]) {
             setKeysDown(prev => {
                 return {...prev,[code]:true};
