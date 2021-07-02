@@ -7,7 +7,7 @@ export const GRID_SIZE = BLOCK_SIZE;
 export const MOVE_SPEED = 3.5;
 export const MOVE_SPEED_DOWN = 1;
 
-export const COLORS = ["red","pink","orange"];
+export const COLORS = ["red","pink","orange","blue"];
 
 export const BLOCKS = [
     [
@@ -24,6 +24,7 @@ export const BLOCKS = [
             [0,-BLOCK_SIZE * 2],
         ]
     ],
+    /*
     [
         [
             [0,0],
@@ -31,7 +32,7 @@ export const BLOCKS = [
             [0,BLOCK_SIZE],
             [BLOCK_SIZE,BLOCK_SIZE]
         ]
-    ]
+    ]*/
 ];
 
 export class TetrisUtility {
@@ -66,7 +67,7 @@ export class TetrisUtility {
                 if (gridPositionY <= 1) {
                     console.log("game over");
                 }
-                return [pos,i];
+                return [pos,i,gridPositionX];
             }
 
             if (gridPositionY >= ROW_COUNT) {

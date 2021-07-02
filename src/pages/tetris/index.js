@@ -60,34 +60,48 @@ export default function Tetris() {
             rightOffset:width[1]
         };
 
-        moveBlocks(undefined,true);
-        moveBlocks(undefined,false,true);
+        rightWallCollisionCheck();
+        leftWallCollisionCheck();
     });
+
+    const rightWallCollisionCheck = useCallback( () => {
+        if (positionRef.current + currentBlockData.current.rightOffset > CANVAS_WIDTH - BLOCK_SIZE) {
+            positionRef.current = CANVAS_WIDTH - BLOCK_SIZE - currentBlockData.current.rightOffset;
+            return true;
+        }
+
+        return false;
+    })
+
+    const leftWallCollisionCheck = useCallback( () => {
+        if (positionRef.current + currentBlockData.current.leftOffset < 0) {
+            positionRef.current = 0 - currentBlockData.current.leftOffset;
+            return true;
+        }
+
+        return false;
+    })
 
     const moveBlocks = useCallback( (target,movingLeft,movingRight) => {
         if (movingRight) {
-            if (positionRef.current + currentBlockData.current.rightOffset > CANVAS_WIDTH - BLOCK_SIZE) {
-                positionRef.current = CANVAS_WIDTH - BLOCK_SIZE - currentBlockData.current.rightOffset;
-            }
-
-            else {
-                positionRef.current += MOVE_SPEED;
+            if (!rightWallCollisionCheck() ) {
+                if (!TetrisUtility.groundCollisionCheck(positionRef.current + BLOCK_SIZE,positionYRef.current,getBlockArray() )) {
+                    positionRef.current += MOVE_SPEED;
+                    return;
+                }
             }
         }
         
         else if (movingLeft) {
-            if (positionRef.current + currentBlockData.current.leftOffset < 0) {
-                positionRef.current = 0 - currentBlockData.current.leftOffset;
-            }
-
-            else {
-                positionRef.current -= MOVE_SPEED;
+            if (!leftWallCollisionCheck() ) {
+                if (!TetrisUtility.groundCollisionCheck(positionRef.current - BLOCK_SIZE,positionYRef.current,getBlockArray() )) {
+                    positionRef.current -= MOVE_SPEED;
+                    return;
+                }
             }
         }
         
-        else {
-            positionRef.current += (target - positionRef.current) * 0.05;
-        }
+        positionRef.current += (target - positionRef.current) * 0.05;
     });
     
     useEffect( () => {
@@ -106,10 +120,15 @@ export default function Tetris() {
 
             const blockArray = getBlockArray();
 
-            const target = Math.round(positionRef.current / GRID_SIZE) * GRID_SIZE;
+            if (isNaN(positionRef.current) ) {
+                positionRef.current = CANVAS_WIDTH / 2;
+            }
+            let target = Math.round(positionRef.current / GRID_SIZE) * GRID_SIZE;
+
             const targetY = ( () => {
                 return blockArray.map(pos => {
                     const gridPosition = TetrisUtility.getGridPosition(target + pos[0],positionYRef.current + pos[1]);
+
                     for(let i = 0; i < ROW_COUNT;i++) {
                         if (TetrisUtility.grid[gridPosition[0]][i]) {
                             return i * BLOCK_SIZE - BLOCK_SIZE;
