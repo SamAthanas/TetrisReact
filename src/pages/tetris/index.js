@@ -1,7 +1,7 @@
 import styles from "./tetris.module.scss";
 import Block from "../../components/block";
 
-import { CANVAS_WIDTH, CANVAS_HEIGHT } from "../../constants";
+import { CANVAS_WIDTH, CANVAS_HEIGHT, BLOCK_SIZE, GRID_SIZE, MOVE_SPEED } from "../../constants";
 import { UseKeyPress } from "../../hooks/KeyPress.js";
 import { useCallback, useEffect, useRef, useState } from "react";
 
@@ -28,14 +28,15 @@ export default function Tetris() {
             const movingRight = keysRef.current["39"];
             
             if (movingRight) {
-                if (positionRef.current > 90) {
-                    positionRef.current = 90;
+                if (positionRef.current > CANVAS_WIDTH - BLOCK_SIZE) {
+                    positionRef.current = CANVAS_WIDTH - BLOCK_SIZE;
                 }
 
                 else {
-                    positionRef.current += .5;
+                    positionRef.current += MOVE_SPEED;
                     directionRef.current = 1;
                 }
+
             }
             
             else if (movingLeft) {
@@ -44,13 +45,14 @@ export default function Tetris() {
                 }
 
                 else {
-                    positionRef.current -= .5;
+                    positionRef.current -= MOVE_SPEED;
                     directionRef.current = -1;
                 }
             }
             
             else {
-                const target = Math.round(positionRef.current / 10) * 10;
+                const target = Math.round(positionRef.current / GRID_SIZE) * GRID_SIZE;
+
                 positionRef.current += (target - positionRef.current) * 0.05;
             }
 

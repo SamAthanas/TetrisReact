@@ -1,5 +1,5 @@
 import styles from "./block.module.scss";
-import { CANVAS_WIDTH, CANVAS_HEIGHT } from "../../constants";
+import { BLOCK_SIZE } from "../../constants";
 import { useEffect, useState } from "react";
 
 export default function Block(props) {
@@ -8,7 +8,9 @@ export default function Block(props) {
             className = {styles.block}
             style = {
                 {
-                    left:`${props.position}%`
+                    left:`${props.position}px`,
+                    width:BLOCK_SIZE,
+                    height:BLOCK_SIZE
                 }
             }
         >  
