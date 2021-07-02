@@ -25,120 +25,120 @@ export const BLOCKS = [
             [0,-BLOCK_SIZE * 2],
         ]
     ],
-    [
-        [
-            [0,0],
-            [BLOCK_SIZE,0],
-            [0,BLOCK_SIZE],
-            [BLOCK_SIZE,BLOCK_SIZE]
-        ]
-    ],
-    [
-        [
-            [0,0],
-            [-BLOCK_SIZE,0],
-            [BLOCK_SIZE,-BLOCK_SIZE],
-            [BLOCK_SIZE,0]
-        ],
-        [
-            [0,0],
-            [0,-BLOCK_SIZE],
-            [0,BLOCK_SIZE],
-            [BLOCK_SIZE,BLOCK_SIZE]
-        ],
-        [
-            [0,0],
-            [BLOCK_SIZE,0],
-            [-BLOCK_SIZE,0],
-            [-BLOCK_SIZE,BLOCK_SIZE]
-        ],
-        [
-            [0,0],
-            [0,-BLOCK_SIZE],
-            [-BLOCK_SIZE,-BLOCK_SIZE],
-            [0,BLOCK_SIZE]
-        ]
-    ],
-    [
-        [
-            [0,0],
-            [-BLOCK_SIZE,0],
-            [-BLOCK_SIZE,-BLOCK_SIZE],
-            [BLOCK_SIZE,0]
-        ],
-        [
-            [0,0],
-            [BLOCK_SIZE,0],
-            [0,-BLOCK_SIZE],
-            [0,-BLOCK_SIZE * 2]
-        ],
-        [
-            [0,-BLOCK_SIZE],
-            [-BLOCK_SIZE,-BLOCK_SIZE],
-            [BLOCK_SIZE,-BLOCK_SIZE],
-            [-BLOCK_SIZE,0]
-        ],
-        [
-            [0,0],
-            [0,-BLOCK_SIZE],
-            [-BLOCK_SIZE,-BLOCK_SIZE],
-            [0,BLOCK_SIZE]
-        ]
-    ],
-    [
-        [
-            [0,0],
-            [-BLOCK_SIZE,0],
-            [0,BLOCK_SIZE],
-            [BLOCK_SIZE,BLOCK_SIZE]
-        ],
-        [
-            [0,0],
-            [-BLOCK_SIZE,0],
-            [-BLOCK_SIZE,BLOCK_SIZE],
-            [0,-BLOCK_SIZE]
-        ]
-    ],
-    [
-        [
-            [0,0],
-            [BLOCK_SIZE,0],
-            [0,BLOCK_SIZE],
-            [-BLOCK_SIZE,BLOCK_SIZE]
-        ],
-        [
-            [0,0],
-            [0,BLOCK_SIZE],
-            [-BLOCK_SIZE,0],
-            [-BLOCK_SIZE,-BLOCK_SIZE]
-        ]
-    ],
-    [
-        [
-            [0,0],
-            [BLOCK_SIZE,0],
-            [-BLOCK_SIZE,0],
-            [0,-BLOCK_SIZE]
-        ],
-        [
-            [0,0],
-            [0,BLOCK_SIZE],
-            [0,-BLOCK_SIZE],
-            [BLOCK_SIZE,0]
-        ],
-        [
-            [0,0],
-            [0,-BLOCK_SIZE],
-            [BLOCK_SIZE,-BLOCK_SIZE],
-            [-BLOCK_SIZE,-BLOCK_SIZE]
-        ],
-        [
-            [0,0],
-            [0,BLOCK_SIZE],
-            [0,-BLOCK_SIZE],
-            [-BLOCK_SIZE,0]
-        ]
-    ]
+    // [
+    //     [
+    //         [0,0],
+    //         [BLOCK_SIZE,0],
+    //         [0,BLOCK_SIZE],
+    //         [BLOCK_SIZE,BLOCK_SIZE]
+    //     ]
+    // ],
+    // [
+    //     [
+    //         [0,0],
+    //         [-BLOCK_SIZE,0],
+    //         [BLOCK_SIZE,-BLOCK_SIZE],
+    //         [BLOCK_SIZE,0]
+    //     ],
+    //     [
+    //         [0,0],
+    //         [0,-BLOCK_SIZE],
+    //         [0,BLOCK_SIZE],
+    //         [BLOCK_SIZE,BLOCK_SIZE]
+    //     ],
+    //     [
+    //         [0,0],
+    //         [BLOCK_SIZE,0],
+    //         [-BLOCK_SIZE,0],
+    //         [-BLOCK_SIZE,BLOCK_SIZE]
+    //     ],
+    //     [
+    //         [0,0],
+    //         [0,-BLOCK_SIZE],
+    //         [-BLOCK_SIZE,-BLOCK_SIZE],
+    //         [0,BLOCK_SIZE]
+    //     ]
+    // ],
+    // [
+    //     [
+    //         [0,0],
+    //         [-BLOCK_SIZE,0],
+    //         [-BLOCK_SIZE,-BLOCK_SIZE],
+    //         [BLOCK_SIZE,0]
+    //     ],
+    //     [
+    //         [0,0],
+    //         [BLOCK_SIZE,0],
+    //         [0,-BLOCK_SIZE],
+    //         [0,-BLOCK_SIZE * 2]
+    //     ],
+    //     [
+    //         [0,-BLOCK_SIZE],
+    //         [-BLOCK_SIZE,-BLOCK_SIZE],
+    //         [BLOCK_SIZE,-BLOCK_SIZE],
+    //         [-BLOCK_SIZE,0]
+    //     ],
+    //     [
+    //         [0,0],
+    //         [0,-BLOCK_SIZE],
+    //         [-BLOCK_SIZE,-BLOCK_SIZE],
+    //         [0,BLOCK_SIZE]
+    //     ]
+    // ],
+    // [
+    //     [
+    //         [0,0],
+    //         [-BLOCK_SIZE,0],
+    //         [0,BLOCK_SIZE],
+    //         [BLOCK_SIZE,BLOCK_SIZE]
+    //     ],
+    //     [
+    //         [0,0],
+    //         [-BLOCK_SIZE,0],
+    //         [-BLOCK_SIZE,BLOCK_SIZE],
+    //         [0,-BLOCK_SIZE]
+    //     ]
+    // ],
+    // [
+    //     [
+    //         [0,0],
+    //         [BLOCK_SIZE,0],
+    //         [0,BLOCK_SIZE],
+    //         [-BLOCK_SIZE,BLOCK_SIZE]
+    //     ],
+    //     [
+    //         [0,0],
+    //         [0,BLOCK_SIZE],
+    //         [-BLOCK_SIZE,0],
+    //         [-BLOCK_SIZE,-BLOCK_SIZE]
+    //     ]
+    // ],
+    // [
+    //     [
+    //         [0,0],
+    //         [BLOCK_SIZE,0],
+    //         [-BLOCK_SIZE,0],
+    //         [0,-BLOCK_SIZE]
+    //     ],
+    //     [
+    //         [0,0],
+    //         [0,BLOCK_SIZE],
+    //         [0,-BLOCK_SIZE],
+    //         [BLOCK_SIZE,0]
+    //     ],
+    //     [
+    //         [0,0],
+    //         [0,-BLOCK_SIZE],
+    //         [BLOCK_SIZE,-BLOCK_SIZE],
+    //         [-BLOCK_SIZE,-BLOCK_SIZE]
+    //     ],
+    //     [
+    //         [0,0],
+    //         [0,BLOCK_SIZE],
+    //         [0,-BLOCK_SIZE],
+    //         [-BLOCK_SIZE,0]
+    //     ]
+    // ]
 ];
 
 export class TetrisUtility {
@@ -146,7 +146,7 @@ export class TetrisUtility {
     
     static initTetrisArray() {
         for(let i = 0; i < ROW_COUNT;i++) {
-            TetrisUtility.grid.push(Array(COLUMN_COUNT).fill(false) );
+            TetrisUtility.grid.push(Array(COLUMN_COUNT).fill(null) );
         }
     }
 
@@ -163,6 +163,7 @@ export class TetrisUtility {
 
     static setGridBlock(block,posX,posY) {
         TetrisUtility.grid[posX][posY] = block;
+        console.log("set pos",posX,posY);
     }
 
     static groundCollisionCheck(posX,posY,blockArray) {
@@ -205,16 +206,6 @@ export class TetrisUtility {
 
         return rows;
     }
-
-    static clearRows() {
-        const rows = TetrisUtility.getRowsToClear();
-        if (rows) {
-            for(const row of rows) {
-                console.log("query row" + row);
-                document.querySelectorAll(`.y${row}`).forEach(elem => {
-                    elem.classList.add("destroy");
-                })
-            }
-        }
-    }
 }
+
+window.test = TetrisUtility;

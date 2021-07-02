@@ -1,7 +1,7 @@
 import styles from "./tetris.module.scss";
 import Block from "../../components/block";
 
-import { COLORS, BLOCKS, CANVAS_WIDTH, CANVAS_HEIGHT, BLOCK_SIZE, GRID_SIZE, MOVE_SPEED, MOVE_SPEED_DOWN, MOVE_SPEED_DOWN_FAST, TetrisUtility, ROW_COUNT } from "../../constants";
+import { COLORS, BLOCKS, CANVAS_WIDTH, CANVAS_HEIGHT, BLOCK_SIZE, GRID_SIZE, MOVE_SPEED, MOVE_SPEED_DOWN, MOVE_SPEED_DOWN_FAST, TetrisUtility, ROW_COUNT, COLUMN_COUNT } from "../../constants";
 import { UseKeyPress } from "../../hooks/KeyPress.js";
 import { useCallback, useEffect, useRef, useState } from "react";
 
@@ -125,6 +125,24 @@ export default function Tetris() {
         
         positionRef.current += (target - positionRef.current) * 0.05;
     });
+
+    const clearRows = () => {
+        const rows = TetrisUtility.getRowsToClear();
+        if (rows) {
+            for(const row of rows) {
+                for(let i = 0; i < COLUMN_COUNT;i++) {
+                    TetrisUtility.grid[i][row] = null;
+                }
+                document.querySelectorAll(`.y${row}`).forEach(elem => {
+                    elem.classList.add("destroy");
+                })
+            }
+
+            //!Need to move everything above the destroyed row down one!!!!
+            
+            setTimeout( () => setGridBlocks(prev => [...prev.filter(elem => !rows.includes(parseInt(elem.props.className.replace(new RegExp(/[\D]+/g),""))))]),650);
+        }
+    }
     
     useEffect( () => {
 
@@ -214,7 +232,7 @@ export default function Tetris() {
                 colorRef.current = COLORS[Math.round(Math.random() * (COLORS.length - 1))];
 
                 // Check grid to clear
-                TetrisUtility.clearRows();
+                clearRows();
 
                 //TODO: Testing, pick random block after collision
                 selectNextBlock();
