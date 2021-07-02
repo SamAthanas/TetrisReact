@@ -5,6 +5,9 @@ import { COLORS, BLOCKS, CANVAS_WIDTH, CANVAS_HEIGHT, BLOCK_SIZE, GRID_SIZE, MOV
 import { UseKeyPress } from "../../hooks/KeyPress.js";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+//TODO, fix glitch if pressing against placed blocks, shoots up to the top of it, invalid target Y!!!
+//TODO,see if you can generate the rotated X,Y Coordinates for blocks rather then specifying them, could run a function to do it one time?
+
 export default function Tetris() {
     const [activeBlocks,setActiveBlocks] = useState(null);
     const [gridBlocks,setGridBlocks] = useState([]);
@@ -31,33 +34,43 @@ export default function Tetris() {
         keysRef.current = keysDown;
 
         if (keysDown["32"]) {
-            currentBlockRotateRef.current = (currentBlockRotateRef.current + 1) % BLOCKS[currentBlockIndexRef.current].length;
-            recalculcateBlocks();
+            const leftCollisionCheck = TetrisUtility.groundCollisionCheck(positionRef.current + currentBlockData.current.leftOffset,positionYRef.current + currentBlockData.current.topOffset,getBlockArray(1) );
+            const rightCollisionCheck = TetrisUtility.groundCollisionCheck(positionRef.current + currentBlockData.current.rightOffset,positionYRef.current + + currentBlockData.current.bottomOffset,getBlockArray(1) );
+            if (!leftCollisionCheck && !rightCollisionCheck) {
+                currentBlockRotateRef.current = (currentBlockRotateRef.current + 1) % BLOCKS[currentBlockIndexRef.current].length;
+                recalculcateBlocks();
+            }
         }
     },[keysDown]);
     
-    const getBlockArray = useCallback( () => {
+    const getBlockArray = useCallback( offset => {
         const shape = BLOCKS[currentBlockIndexRef.current];
-        return shape[currentBlockRotateRef.current % shape.length];
+        return shape[(currentBlockRotateRef.current + (offset || 0) ) % shape.length];
     });
 
     const recalculcateBlocks = useCallback( () => {
         const blockArray = getBlockArray();
-        const width = [...blockArray].reduce( (acc,elem) => {
-            if (elem[0] < acc[0]) {
-                return [elem[0],acc[1]];
-            }
+        let sizes = [];
 
-            if (elem[0] > acc[1]) {
-                return [acc[0],elem[0]];
-            }
+        for(let i = 0; i < 2;i++) {
+            sizes.push([...blockArray].reduce( (acc,elem) => {
+                if (elem[i] < acc[0]) {
+                    return [elem[i],acc[1]];
+                }
 
-            return acc;
-        },[0,0]);
+                if (elem[i] > acc[1]) {
+                    return [acc[0],elem[i]];
+                }
+
+                return acc;
+            },[0,0]));
+        }
 
         currentBlockData.current = {
-            leftOffset:width[0],
-            rightOffset:width[1]
+            leftOffset:sizes[0][0],
+            rightOffset:sizes[0][1],
+            topOffset:sizes[1][0],
+            bottomOffset:sizes[1][1]
         };
 
         rightWallCollisionCheck();
@@ -129,7 +142,7 @@ export default function Tetris() {
                 return blockArray.map(pos => {
                     const gridPosition = TetrisUtility.getGridPosition(target + pos[0],positionYRef.current + pos[1]);
 
-                    for(let i = 0; i < ROW_COUNT;i++) {
+                    for(let i = gridPosition[1]; i < ROW_COUNT;i++) {
                         if (TetrisUtility.grid[gridPosition[0]][i]) {
                             return i * BLOCK_SIZE - BLOCK_SIZE;
                         }

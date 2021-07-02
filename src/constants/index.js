@@ -24,7 +24,6 @@ export const BLOCKS = [
             [0,-BLOCK_SIZE * 2],
         ]
     ],
-    /*
     [
         [
             [0,0],
@@ -32,7 +31,7 @@ export const BLOCKS = [
             [0,BLOCK_SIZE],
             [BLOCK_SIZE,BLOCK_SIZE]
         ]
-    ]*/
+    ]
 ];
 
 export class TetrisUtility {
