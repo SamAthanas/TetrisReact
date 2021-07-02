@@ -4,7 +4,7 @@ export const UseKeyPress = () => {
     const [keysDown,setKeysDown] = useState({});
 
     const validKeyCode = code => {
-        return ["37","39","40"].includes(code);
+        return ["32","37","39","40"].includes(code);
     }
 
     const handleKeyDown = evt => {

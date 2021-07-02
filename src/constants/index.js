@@ -9,6 +9,24 @@ export const MOVE_SPEED_DOWN = 1;
 
 export const COLORS = ["red","pink","orange"];
 
+export const BLOCKS = [
+    [
+        [
+            [0,0],
+            [-BLOCK_SIZE,0],
+            [-BLOCK_SIZE * 2,0],
+            [BLOCK_SIZE,0]
+        ],
+        [
+            [0,0],
+            [0,-BLOCK_SIZE],
+            [0,BLOCK_SIZE],
+            [0,-BLOCK_SIZE * 2],
+        ]
+    ]
+];
+
+
 export class TetrisUtility {
     static grid = [];
     
@@ -16,11 +34,17 @@ export class TetrisUtility {
         for(let i = 0; i < ROW_COUNT;i++) {
             TetrisUtility.grid.push(Array(COLUMN_COUNT).fill(false) );
         }
+        
+        TetrisUtility.getRandomBlock();
+    }
+
+    static constrain(num,min,max) {
+        return num < min ? min : num > max ? max : num;
     }
 
     static getGridPosition(posX,posY) {
-        const arrayX = Math.round(posX / (CANVAS_WIDTH / COLUMN_COUNT) );
-        const arrayY = Math.round(posY / (CANVAS_HEIGHT / ROW_COUNT) );
+        const arrayX = TetrisUtility.constrain(Math.round(posX / (CANVAS_WIDTH / COLUMN_COUNT) ),0,COLUMN_COUNT);
+        const arrayY = TetrisUtility.constrain(Math.round(posY / (CANVAS_HEIGHT / ROW_COUNT) ),0,ROW_COUNT);
         
         return [arrayX,arrayY];
     }
@@ -29,16 +53,26 @@ export class TetrisUtility {
         TetrisUtility.grid[posX][posY] = true;
     }
 
-    static groundCollisionCheck(posX,posY) {
-        const [gridPositionX,gridPositionY] = TetrisUtility.getGridPosition(posX,posY);
+    static groundCollisionCheck(posX,posY,blockArray) {
+        for(const [i,pos] of blockArray.entries() ) {
+            const [gridPositionX,gridPositionY] = TetrisUtility.getGridPosition(posX + pos[0],posY + pos[1]);
 
-        if (TetrisUtility.grid[gridPositionX][gridPositionY]) {
-            if (gridPositionY <= 1) {
-                console.log("game over");
+            if (TetrisUtility.grid[gridPositionX][gridPositionY]) {
+                if (gridPositionY <= 1) {
+                    console.log("game over");
+                }
+                return [pos,i];
             }
-            return true;
+
+            if (gridPositionY >= ROW_COUNT) {
+                return [pos,i];
+            }
         }
 
-        return gridPositionY >= ROW_COUNT;
+        return null;
+    }
+
+    static getRandomBlock() {
+        return (Math.random() * (BLOCKS.length - 1));
     }
 }

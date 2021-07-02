@@ -8,8 +8,8 @@ export default function Block(props) {
             className = {`${styles.block} ${props.color}`}
             style = {
                 {
-                    left:`${props.position}px`,
-                    top:`${props.positionY}px`,
+                    left:`${props.position + (props.offsetX || 0)}px`,
+                    top:`${props.positionY + (props.offsetY || 0)}px`,
                     width:BLOCK_SIZE,
                     height:BLOCK_SIZE
                 }

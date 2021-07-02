@@ -12,6 +12,7 @@ $themeColours: (
 
     background:black;
     position:absolute;
+    transition:50ms;
 
     @each $themeColour, $i in $themeColours {
         &:global(.#{$themeColour}) {
