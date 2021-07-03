@@ -3,6 +3,8 @@ $themeColours: (
     "red": #D64651,
     "orange": #E55937,
     "blue": #377de5,
+    "green": #34a563,
+    "purple": #7a37e5,
 );
 
 .block {
@@ -23,8 +25,10 @@ $themeColours: (
 
     &:global(.destroy) {
         filter:url(#glitch);
+        opacity:0;
         // Transition out effect
         @keyframes block-destroy {
+            from { opacity: 1; }
             to {
                 transform:scale(1,0);
                 transform-origin:bottom;

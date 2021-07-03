@@ -1,7 +1,7 @@
 import styles from "./tetris.module.scss";
 import Block from "../../components/block";
 
-import { COLORS, BLOCKS, CANVAS_WIDTH, CANVAS_HEIGHT, BLOCK_SIZE, GRID_SIZE, MOVE_SPEED, MOVE_SPEED_DOWN, MOVE_SPEED_DOWN_FAST, TetrisUtility, ROW_COUNT, COLUMN_COUNT } from "../../constants";
+import { delay, COLORS, BLOCKS, CANVAS_WIDTH, CANVAS_HEIGHT, BLOCK_SIZE, GRID_SIZE, MOVE_SPEED, MOVE_SPEED_DOWN, MOVE_SPEED_DOWN_FAST, TetrisUtility, ROW_COUNT, COLUMN_COUNT } from "../../constants";
 import { UseKeyPress } from "../../hooks/KeyPress.js";
 import { useCallback, useEffect, useRef, useState } from "react";
 
@@ -11,6 +11,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 export default function Tetris() {
     const [activeBlocks,setActiveBlocks] = useState(null);
     const [gridBlocks,setGridBlocks] = useState([]);
+    const gridBlocksRef = useRef(gridBlocks);
+
+    const [deleteRows,setDeleteRows] = useState([]);
 
     const [ keysDown ] = UseKeyPress();
 
@@ -126,21 +129,42 @@ export default function Tetris() {
         positionRef.current += (target - positionRef.current) * 0.05;
     });
 
-    const clearRows = () => {
+    const clearRows = async () => {
         const rows = TetrisUtility.getRowsToClear();
+
+        while(deleteRows.length > 0) {
+            await delay(1);
+        }
+
+        setDeleteRows([...deleteRows,...rows]);
+
+        await delay(300);
+
+        setDeleteRows([]);
+
         if (rows) {
             for(const row of rows) {
                 for(let i = 0; i < COLUMN_COUNT;i++) {
-                    TetrisUtility.grid[i][row] = null;
-                }
-                document.querySelectorAll(`.y${row}`).forEach(elem => {
-                    elem.classList.add("destroy");
-                })
-            }
+                    for(let j = row;j > 0;j--) {
+                        const topBlock =TetrisUtility.grid[i][j-1];
+                        if (topBlock) {
+                            topBlock.positionY += BLOCK_SIZE;
+                            topBlock.offsetY2 =  -BLOCK_SIZE;
 
-            //!Need to move everything above the destroyed row down one!!!!
-            
-            setTimeout( () => setGridBlocks(prev => [...prev.filter(elem => !rows.includes(parseInt(elem.props.className.replace(new RegExp(/[\D]+/g),""))))]),650);
+                            topBlock.resetOffset = (function*() {
+                                for(let i = 0; i < BLOCK_SIZE;i++) {
+                                    topBlock.offsetY2 ++;
+                                    yield;
+                                }
+
+                                return;
+                            })();
+                        }
+
+                        TetrisUtility.grid[i][j] = TetrisUtility.grid[i][j-1];
+                    }
+                }
+            }
         }
     }
     
@@ -220,13 +244,25 @@ export default function Tetris() {
                 positionYRef.current = targetY[collisionOffsets[1]] - collisionOffsets[0][1];
                 currentBlocks = getCurrentBlocks(true);
 
+                const displayBlocks = currentBlocks.map(elem => {
+                    return {
+                        position:elem.props.position,
+                        positionY:elem.props.positionY,
+                        offsetX:elem.props.offsetX,
+                        offsetY:elem.props.offsetY,
+                        offsetY2:elem.props.offsetY2,
+                        resetOffset:elem.props.resetOffset,
+                        color:elem.props.color
+                    };
+                });
+
                 // Set the grid matrix of occupied spaces
                 for(const [posIndex,pos] of blockArray.entries() ) {
                     const position = TetrisUtility.getGridPosition(target + pos[0],positionYRef.current + pos[1]);
-                    TetrisUtility.setGridBlock(currentBlocks[posIndex],...position);
+                    TetrisUtility.setGridBlock(displayBlocks[posIndex],...position);
                 }
                 
-                setGridBlocks(prev => [...prev,...currentBlocks] );
+                //setGridBlocks(prev => [...prev,...displayBlocks] );
                 positionYRef.current = 0; // Reset Y Axis
 
                 colorRef.current = COLORS[Math.round(Math.random() * (COLORS.length - 1))];
@@ -253,11 +289,32 @@ export default function Tetris() {
     },[]);
 
     const width = CANVAS_WIDTH,height = CANVAS_HEIGHT;
+
     return (
         <div className = {styles.wrapper}>
             <div className = {styles.container} style = {{width,height}}>
                 {activeBlocks}
-                {gridBlocks}
+                {
+                    TetrisUtility.grid.filter(elem => elem).flat().map(elem => {
+                        if (!elem) {
+                            return <></>;
+                        }
+
+                        if (elem.resetOffset) {
+                            if (elem.resetOffset.next().done) {
+                                elem.resetOffset = undefined;
+                            }
+                        }
+
+                        return (<Block
+                            position = {elem.position + elem.offsetX}
+                            positionY = {elem.positionY + elem.offsetY + (elem.offsetY2 || 0)}
+                            color = {elem.color}
+                            className = {`${elem.className} ${deleteRows.includes(TetrisUtility.getGridPosition(0,elem.positionY + elem.offsetY)[1]) ? "destroy" : ""}`}
+                        />)
+                    })
+                }
+                {/*TetrisUtility.grid.filter(elem => elem).flat()*/}
             </div>
         </div>
     );

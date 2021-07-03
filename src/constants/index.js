@@ -8,7 +8,7 @@ export const MOVE_SPEED = 3.5;
 export const MOVE_SPEED_DOWN = 0.2;
 export const MOVE_SPEED_DOWN_FAST = 3;
 
-export const COLORS = ["red","pink","orange","blue"];
+export const COLORS = ["red","pink","orange","blue","green","purple"];
 
 export const BLOCKS = [
     [
@@ -25,121 +25,123 @@ export const BLOCKS = [
             [0,-BLOCK_SIZE * 2],
         ]
     ],
-    // [
-    //     [
-    //         [0,0],
-    //         [BLOCK_SIZE,0],
-    //         [0,BLOCK_SIZE],
-    //         [BLOCK_SIZE,BLOCK_SIZE]
-    //     ]
-    // ],
-    // [
-    //     [
-    //         [0,0],
-    //         [-BLOCK_SIZE,0],
-    //         [BLOCK_SIZE,-BLOCK_SIZE],
-    //         [BLOCK_SIZE,0]
-    //     ],
-    //     [
-    //         [0,0],
-    //         [0,-BLOCK_SIZE],
-    //         [0,BLOCK_SIZE],
-    //         [BLOCK_SIZE,BLOCK_SIZE]
-    //     ],
-    //     [
-    //         [0,0],
-    //         [BLOCK_SIZE,0],
-    //         [-BLOCK_SIZE,0],
-    //         [-BLOCK_SIZE,BLOCK_SIZE]
-    //     ],
-    //     [
-    //         [0,0],
-    //         [0,-BLOCK_SIZE],
-    //         [-BLOCK_SIZE,-BLOCK_SIZE],
-    //         [0,BLOCK_SIZE]
-    //     ]
-    // ],
-    // [
-    //     [
-    //         [0,0],
-    //         [-BLOCK_SIZE,0],
-    //         [-BLOCK_SIZE,-BLOCK_SIZE],
-    //         [BLOCK_SIZE,0]
-    //     ],
-    //     [
-    //         [0,0],
-    //         [BLOCK_SIZE,0],
-    //         [0,-BLOCK_SIZE],
-    //         [0,-BLOCK_SIZE * 2]
-    //     ],
-    //     [
-    //         [0,-BLOCK_SIZE],
-    //         [-BLOCK_SIZE,-BLOCK_SIZE],
-    //         [BLOCK_SIZE,-BLOCK_SIZE],
-    //         [-BLOCK_SIZE,0]
-    //     ],
-    //     [
-    //         [0,0],
-    //         [0,-BLOCK_SIZE],
-    //         [-BLOCK_SIZE,-BLOCK_SIZE],
-    //         [0,BLOCK_SIZE]
-    //     ]
-    // ],
-    // [
-    //     [
-    //         [0,0],
-    //         [-BLOCK_SIZE,0],
-    //         [0,BLOCK_SIZE],
-    //         [BLOCK_SIZE,BLOCK_SIZE]
-    //     ],
-    //     [
-    //         [0,0],
-    //         [-BLOCK_SIZE,0],
-    //         [-BLOCK_SIZE,BLOCK_SIZE],
-    //         [0,-BLOCK_SIZE]
-    //     ]
-    // ],
-    // [
-    //     [
-    //         [0,0],
-    //         [BLOCK_SIZE,0],
-    //         [0,BLOCK_SIZE],
-    //         [-BLOCK_SIZE,BLOCK_SIZE]
-    //     ],
-    //     [
-    //         [0,0],
-    //         [0,BLOCK_SIZE],
-    //         [-BLOCK_SIZE,0],
-    //         [-BLOCK_SIZE,-BLOCK_SIZE]
-    //     ]
-    // ],
-    // [
-    //     [
-    //         [0,0],
-    //         [BLOCK_SIZE,0],
-    //         [-BLOCK_SIZE,0],
-    //         [0,-BLOCK_SIZE]
-    //     ],
-    //     [
-    //         [0,0],
-    //         [0,BLOCK_SIZE],
-    //         [0,-BLOCK_SIZE],
-    //         [BLOCK_SIZE,0]
-    //     ],
-    //     [
-    //         [0,0],
-    //         [0,-BLOCK_SIZE],
-    //         [BLOCK_SIZE,-BLOCK_SIZE],
-    //         [-BLOCK_SIZE,-BLOCK_SIZE]
-    //     ],
-    //     [
-    //         [0,0],
-    //         [0,BLOCK_SIZE],
-    //         [0,-BLOCK_SIZE],
-    //         [-BLOCK_SIZE,0]
-    //     ]
-    // ]
+    [
+        [
+            [0,0],
+            [BLOCK_SIZE,0],
+            [0,BLOCK_SIZE],
+            [BLOCK_SIZE,BLOCK_SIZE]
+        ]
+    ],
+    [
+        [
+            [0,0],
+            [-BLOCK_SIZE,0],
+            [BLOCK_SIZE,-BLOCK_SIZE],
+            [BLOCK_SIZE,0]
+        ],
+        [
+            [0,0],
+            [0,-BLOCK_SIZE],
+            [0,BLOCK_SIZE],
+            [BLOCK_SIZE,BLOCK_SIZE]
+        ],
+        [
+            [0,0],
+            [BLOCK_SIZE,0],
+            [-BLOCK_SIZE,0],
+            [-BLOCK_SIZE,BLOCK_SIZE]
+        ],
+        [
+            [0,0],
+            [0,-BLOCK_SIZE],
+            [-BLOCK_SIZE,-BLOCK_SIZE],
+            [0,BLOCK_SIZE]
+        ]
+    ],
+    [
+        [
+            [0,0],
+            [-BLOCK_SIZE,0],
+            [-BLOCK_SIZE,-BLOCK_SIZE],
+            [BLOCK_SIZE,0]
+        ],
+        [
+            [0,0],
+            [BLOCK_SIZE,0],
+            [0,-BLOCK_SIZE],
+            [0,-BLOCK_SIZE * 2]
+        ],
+        [
+            [0,-BLOCK_SIZE],
+            [-BLOCK_SIZE,-BLOCK_SIZE],
+            [BLOCK_SIZE,-BLOCK_SIZE],
+            [-BLOCK_SIZE,0]
+        ],
+        [
+            [0,0],
+            [0,-BLOCK_SIZE],
+            [-BLOCK_SIZE,-BLOCK_SIZE],
+            [0,BLOCK_SIZE]
+        ]
+    ],
+    [
+        [
+            [0,0],
+            [-BLOCK_SIZE,0],
+            [0,BLOCK_SIZE],
+            [BLOCK_SIZE,BLOCK_SIZE]
+        ],
+        [
+            [0,0],
+            [-BLOCK_SIZE,0],
+            [-BLOCK_SIZE,BLOCK_SIZE],
+            [0,-BLOCK_SIZE]
+        ]
+    ],
+    [
+        [
+            [0,0],
+            [BLOCK_SIZE,0],
+            [0,BLOCK_SIZE],
+            [-BLOCK_SIZE,BLOCK_SIZE]
+        ],
+        [
+            [0,0],
+            [0,BLOCK_SIZE],
+            [-BLOCK_SIZE,0],
+            [-BLOCK_SIZE,-BLOCK_SIZE]
+        ]
+    ],
+    [
+        [
+            [0,0],
+            [BLOCK_SIZE,0],
+            [-BLOCK_SIZE,0],
+            [0,-BLOCK_SIZE]
+        ],
+        [
+            [0,0],
+            [0,BLOCK_SIZE],
+            [0,-BLOCK_SIZE],
+            [BLOCK_SIZE,0]
+        ],
+        [
+            [0,0],
+            [0,-BLOCK_SIZE],
+            [BLOCK_SIZE,-BLOCK_SIZE],
+            [-BLOCK_SIZE,-BLOCK_SIZE]
+        ],
+        [
+            [0,0],
+            [0,BLOCK_SIZE],
+            [0,-BLOCK_SIZE],
+            [-BLOCK_SIZE,0]
+        ]
+    ]
 ];
+
+export const delay = time => new Promise(resolve => setTimeout(resolve,time));
 
 export class TetrisUtility {
     static grid = [];
@@ -154,6 +156,10 @@ export class TetrisUtility {
         return num < min ? min : num > max ? max : num;
     }
 
+    static convertToInteger(num) {
+        return parseInt(num.replace(new RegExp(/[\D]+/g),"") );
+    }
+
     static getGridPosition(posX,posY) {
         const arrayX = TetrisUtility.constrain(Math.round(posX / (CANVAS_WIDTH / COLUMN_COUNT) ),0,COLUMN_COUNT);
         const arrayY = TetrisUtility.constrain(Math.round(posY / (CANVAS_HEIGHT / ROW_COUNT) ),0,ROW_COUNT);
@@ -163,7 +169,6 @@ export class TetrisUtility {
 
     static setGridBlock(block,posX,posY) {
         TetrisUtility.grid[posX][posY] = block;
-        console.log("set pos",posX,posY);
     }
 
     static groundCollisionCheck(posX,posY,blockArray) {
@@ -186,20 +191,20 @@ export class TetrisUtility {
     }
 
     static getRandomBlock() {
-        return (Math.round(Math.random() ) * (BLOCKS.length - 1));
+        return (Math.round(Math.random() * (BLOCKS.length - 1)));
     }
 
     static getRowsToClear() {
         let rows = [];
-        for(let i = 0; i < TetrisUtility.grid.length;i++) {
+        for(let i = 0; i < ROW_COUNT;i++) {
             let count = 0;
-            for(let j = 0; j < TetrisUtility.grid[i].length;j++) {
+            for(let j = 0; j < COLUMN_COUNT;j++) {
                 if (TetrisUtility.grid[j][i]) {
                     count++;
                 }
             }
 
-            if (count >= TetrisUtility.grid[i].length) {
+            if (count >= COLUMN_COUNT) {
                 rows.push(i);
             }
         }

@@ -6,13 +6,43 @@
     place-items:center;
     width:100vw;
     height:100vh;
-    background-color:grey;
+    background-color: #4158D0;
+    background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+    
+    background-size:200% 200%;
+
+    perspective:1000px;
+    
+    @keyframes background-animate {
+        0% {
+            background-position:top right;
+            background-filter:hue-rotate(0deg);
+        }
+
+        25% {
+            background-position:top left;
+        }
+
+        50% {
+            background-position:bottom left;
+        }
+
+        100% {
+            background-position:bottom right;
+            background-filter:hue-rotate(360deg);
+        }
+    }
+
+    animation:background-animate 30s alternate infinite;
 
     .container {
         position:relative;
         border:1px solid black;
         border-radius:10px;
         overflow:hidden;
-        box-shadow:0 0 5px black;
+        box-shadow:0 0 15px black;
+        backdrop-filter:hue-rotate(10deg);
+        background-color:rgba(0, 0, 0, 0.164);
+        //transform:rotateX(10deg);
     }
 }
