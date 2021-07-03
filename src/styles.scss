@@ -1,3 +1,11 @@
 body {
     margin:0;
 }
+
+.container {
+    border:1px solid black;
+    border-radius:10px;
+    box-shadow:0 0 15px black;
+    backdrop-filter:hue-rotate(10deg);
+    background-color:rgba(0, 0, 0, 0.164);
+}

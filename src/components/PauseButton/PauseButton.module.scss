@@ -1,0 +1,45 @@
+.pauseHud {
+    position:relative;
+
+    svg {
+        filter:invert(1);
+        display:none;
+
+        &.active {
+            display:block;
+        }
+
+    }
+
+    &.pressed::after {
+        content:'';
+        position:absolute;
+        left:50%;
+        top:50%;
+        width:100px;
+        height:100px;
+        background-color:white;
+        transform-origin:top left;
+        border-radius:50%;
+        z-index:-10;
+        opacity:0;
+        
+        @keyframes button-pressed {
+            0% {
+                transform:scale(0.5) translate(-50%,-50%);
+                opacity:0;
+            }
+
+            50% {
+                opacity:.4;
+            }
+
+            100% {
+                transform:scale(1) translate(-50%,-50%);
+                opacity:0;
+            }
+        }
+
+        animation:button-pressed 500ms;
+    }
+}
