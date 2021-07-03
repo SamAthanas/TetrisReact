@@ -9,7 +9,18 @@
             display:block;
         }
 
+        @keyframes button-appear {
+            0%,100% {
+                transform:scale(1);
+            }
+            
+            50% {
+                transform:scale(1.35);
+            }
+        }
+        animation:button-appear 500ms;
     }
+
 
     &.pressed::after {
         content:'';

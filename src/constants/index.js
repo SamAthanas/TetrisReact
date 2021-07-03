@@ -211,6 +211,10 @@ export class TetrisUtility {
 
         return rows;
     }
+
+    static getPointsForClearing(count) {
+        return [40,100,300,1200][TetrisUtility.constrain(count - 1,0,4)];
+    }
 }
 
 window.test = TetrisUtility;

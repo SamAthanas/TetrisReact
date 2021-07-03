@@ -1,6 +1,7 @@
 import styles from "./tetris.module.scss";
 import Block from "../../components/block";
 import PauseButton from "../../components/PauseButton";
+import ScoreHud from "../../components/ScoreHud";
 
 import { delay, COLORS, BLOCKS, CANVAS_WIDTH, CANVAS_HEIGHT, BLOCK_SIZE, GRID_SIZE, MOVE_SPEED, MOVE_SPEED_DOWN, MOVE_SPEED_DOWN_FAST, TetrisUtility, ROW_COUNT, COLUMN_COUNT } from "../../constants";
 import { UseKeyPress } from "../../hooks/KeyPress.js";
@@ -14,9 +15,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 export default function Tetris() {
     const [activeBlocks,setActiveBlocks] = useState(null);
     const [deleteRows,setDeleteRows] = useState([]);
-
+    
+    
     const [ keysDown ] = UseKeyPress();
-
+    
+    const scoreRef = useRef(0);
     const pauseRef = useRef(false);
     const frameRef = useRef(null);
     const keysRef = useRef(keysDown);
@@ -140,6 +143,8 @@ export default function Tetris() {
         while(deleteRows.length > 0) {
             await delay(1);
         }
+
+        scoreRef.current += TetrisUtility.getPointsForClearing(rows.length);
 
         setDeleteRows([...deleteRows,...rows]);
 
@@ -299,9 +304,10 @@ export default function Tetris() {
             
             <div className = {`${styles.container} container`} style = {{width,height}}>
                 <div className = {styles.pauseContainer}>
-                    <PauseButton
-                        callback = { paused => pauseRef.current = paused }
-                    />
+                    <PauseButton callback = { paused => pauseRef.current = paused } />
+                </div>
+                <div className = {styles.scoreContainer}>
+                    <ScoreHud score = {scoreRef.current}/>
                 </div>
 
                 <div className = {styles.gameContainer}>
