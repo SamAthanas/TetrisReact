@@ -178,7 +178,8 @@ export class TetrisUtility {
 
             if (TetrisUtility.grid[gridPositionX][gridPositionY]) {
                 if (gridPositionY <= 1) {
-                    console.log("game over");
+                    //Game Over
+                    return [-1,-1];
                 }
                 return [pos,i,gridPositionX];
             }
@@ -218,4 +219,6 @@ export class TetrisUtility {
     }
 }
 
-window.test = TetrisUtility;
+Number.prototype.map = function (in_min, in_max, out_min, out_max) {
+    return (this - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}

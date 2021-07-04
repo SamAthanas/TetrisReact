@@ -4,10 +4,21 @@
     padding-right:10px;
 
     transition:transform 300ms;
-    transform:scale(1);
-
+    transform:scale(1) translateY(-10px);
+    
+    font-size:1.2em;
+    
     &.animate {
-        transform:scale(1.05);
+        transform:scale(1.05) translateY(-10px);
+    }
+    
+    @media (max-width:500px) {
+        font-size:30px;
+        transform:scale(1) translateY(-50px);
+
+        &.animate {
+            transform:scale(1.05) translateY(-50px);
+        }
     }
 
     &.appendScore::after {

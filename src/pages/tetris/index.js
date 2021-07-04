@@ -17,6 +17,7 @@ export default function Tetris() {
     
     const [ keysDown ] = UseKeyPress();
     
+    const gameOverRef = useRef(false);
     const scoreRef = useRef(0);
     const pauseRef = useRef(false);
     const frameRef = useRef(null);
@@ -37,6 +38,7 @@ export default function Tetris() {
         scoreRef.current = 0;
         positionYRef.current = 0;
         scoreRef.current = 0;
+        gameOverRef.current = false;
         TetrisUtility.initTetrisArray();
         selectNextBlock();
         selectNextBlock();
@@ -196,11 +198,16 @@ export default function Tetris() {
         
         recalculcateBlocks();
     }
+
+    const setGameOver = () => {
+        gameOverRef.current = true;
+    }
+
     useEffect( () => {
 
 
         const animate = async () => {
-            if (!pauseRef.current) {
+            if (!pauseRef.current && !gameOverRef.current) {
                 const movingLeft = keysRef.current["37"] || keysRef.current["65"];
                 const movingRight = keysRef.current["39"] || keysRef.current["68"];
                 const movingDown = keysRef.current["40"] || keysRef.current["83"];
@@ -258,6 +265,10 @@ export default function Tetris() {
                 if (!collisionOffsets) {
                     positionYRef.current += movingDown ? MOVE_SPEED_DOWN_FAST : MOVE_SPEED_DOWN;
                 }
+
+                else if (collisionOffsets[0] === -1) {
+                    gameOverRef.current = true;
+                }
                 
                 // On Collision Land
                 else {
@@ -309,11 +320,12 @@ export default function Tetris() {
     },[]);
 
     const width = CANVAS_WIDTH,height = CANVAS_HEIGHT;
+    const scale = TetrisUtility.constrain(window.innerWidth,350,700).map(350,700,0.5,1);
 
     return (<>
         <div className = {styles.wrapper}>
             
-            <div className = {`${styles.container} container`} style = {{width,height}}>
+            <div className = {`${styles.container} ${gameOverRef.current && styles.gameover} container`} style = {{width:width,height:height,minWidth:width,minHeight:height,transform:`translateY(25px) scale(${scale})`}}>
                 <div className = {styles.pauseContainer}>
                     <PauseButton
                         callback = { paused => pauseRef.current = paused }

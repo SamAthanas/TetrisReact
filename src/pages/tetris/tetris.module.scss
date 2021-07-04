@@ -49,6 +49,58 @@
             width:inherit;
             height:inherit;
         }
+
+        &.gameover::after {
+            content:'';
+            position:absolute;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            z-index:2;
+            border-radius:inherit;
+            background-image: radial-gradient(rgba(0, 0, 0, 0.452),rgba(0, 0, 0, 0.295));
+            backdrop-filter:grayscale(1);
+
+            @keyframes gameover-appear {
+                from { opacity:0; }
+                to { opacity:1; }
+            }
+
+            animation:gameover-appear 1s;
+        }
+
+        &.gameover::before {
+            content:"Game Over!";
+            position:absolute;
+            top:40%;
+            left:50%;
+            transform:translate(-50%,-50%);
+            font-size:3em;
+            letter-spacing: 1em;
+            white-space: nowrap;
+            background-image:radial-gradient(rgb(255, 255, 255),rgb(238, 106, 106));
+            background-clip:text;
+            color:transparent;
+            z-index:3;
+            filter:drop-shadow(0 0 2px red);
+
+            @keyframes gameover-animate-in {
+                from {
+                    letter-spacing: 1em;
+                    transform:translate(-50%,-100%);
+                    opacity:0.2;
+                }
+
+                to {
+                    letter-spacing:0.1em;
+                    transform:translate(-50%,-50%);
+                    opacity:1;
+                }
+            }
+
+            animation:gameover-animate-in 2.5s cubic-bezier(0.87, 0, 0.13, 1) forwards;
+        }
     }
 }
 

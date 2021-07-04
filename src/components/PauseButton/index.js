@@ -6,7 +6,7 @@ export default function TetrisHud({callback,restartCallback}) {
     const [pressed,setPressed] = useState(false);
     const [restartPressed,setRestartPressed] = useState(false);
 
-    const togglePause = () => {
+    const togglePause = (animation = true) => {
         setPaused(prev => {
             if (typeof callback === "function") {
                 callback(!prev);
@@ -15,7 +15,7 @@ export default function TetrisHud({callback,restartCallback}) {
             return !prev;
         });
 
-        if (!pressed) {
+        if (!pressed && animation) {
             setPressed(true);
             setTimeout( () => setPressed(false), 500);
         }
@@ -24,6 +24,10 @@ export default function TetrisHud({callback,restartCallback}) {
     const toggleRestart = () => {
         if (typeof restartCallback === "function") {
             restartCallback();
+
+            if (paused) {
+                togglePause(false);
+            }
 
             if (!restartPressed) {
                 setRestartPressed(true);
