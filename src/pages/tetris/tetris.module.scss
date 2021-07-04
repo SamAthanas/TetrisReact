@@ -60,7 +60,7 @@
             z-index:2;
             border-radius:inherit;
             background-image: radial-gradient(rgba(0, 0, 0, 0.452),rgba(0, 0, 0, 0.295));
-            backdrop-filter:grayscale(1);
+            backdrop-filter:grayscale(1) blur(2px);
 
             @keyframes gameover-appear {
                 from { opacity:0; }
@@ -90,6 +90,7 @@
                     letter-spacing: 1em;
                     transform:translate(-50%,-100%);
                     opacity:0.2;
+                    filter:url(#glitch);
                 }
 
                 to {

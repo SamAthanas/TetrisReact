@@ -10,6 +10,8 @@ export const UseKeyPress = () => {
     const handleKeyDown = evt => {
         const code = "" + evt.keyCode;
 
+        window.hideControls = true;
+
         if (validKeyCode(code) && !keysDown[code]) {
             setKeysDown(prev => {
                 return {...prev,[code]:true};
@@ -30,6 +32,8 @@ export const UseKeyPress = () => {
     useEffect( () => {
         window.addEventListener("keydown",handleKeyDown);
         window.addEventListener("keyup", handleKeyUp);
+
+        window.setKeysDown = setKeysDown;
 
         return () => {
             window.removeEventListener("keydown", handleKeyDown);

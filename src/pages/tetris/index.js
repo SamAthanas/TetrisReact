@@ -3,6 +3,7 @@ import Block from "../../components/block";
 import PauseButton from "../../components/PauseButton";
 import ScoreHud from "../../components/ScoreHud";
 import NextBlockHud from "../../components/NextBlockHud";
+import MobileControls from "../../components/MobileControls";
 
 import { delay, COLORS, BLOCKS, CANVAS_WIDTH, CANVAS_HEIGHT, BLOCK_SIZE, GRID_SIZE, MOVE_SPEED, MOVE_SPEED_DOWN, MOVE_SPEED_DOWN_FAST, TetrisUtility, ROW_COUNT, COLUMN_COUNT } from "../../constants";
 import { UseKeyPress } from "../../hooks/KeyPress.js";
@@ -42,6 +43,7 @@ export default function Tetris() {
         TetrisUtility.initTetrisArray();
         selectNextBlock();
         selectNextBlock();
+        window.hideControls = false;
     }
 
     useEffect( () => {
@@ -199,13 +201,8 @@ export default function Tetris() {
         recalculcateBlocks();
     }
 
-    const setGameOver = () => {
-        gameOverRef.current = true;
-    }
-
     useEffect( () => {
-
-
+        
         const animate = async () => {
             if (!pauseRef.current && !gameOverRef.current) {
                 const movingLeft = keysRef.current["37"] || keysRef.current["65"];
@@ -338,6 +335,7 @@ export default function Tetris() {
                 <div className = {styles.blockContainer}>
                     <NextBlockHud nextIndex = {nextBlockRef.current[0]} nextColor = {nextBlockRef.current[1]}/>
                 </div>
+                <MobileControls showControls = {!window.hideControls}/>
 
                 <div className = {styles.gameContainer}>
                     {activeBlocks}
