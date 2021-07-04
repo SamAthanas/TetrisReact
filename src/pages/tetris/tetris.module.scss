@@ -38,6 +38,7 @@
 
     .container {
         position:relative;
+        transform:translateY(15px);
         //transform:rotateX(10deg);
         
         .gameContainer {
@@ -55,8 +56,6 @@
     position:absolute;
     top:-60px;
     right:0;
-    width:50px;
-    height:50px;
 }
 
 .scoreContainer {
@@ -66,4 +65,14 @@
     min-width:50px;
     height:50px;
     z-index:10;
+}
+
+.blockContainer {
+    position:absolute;
+    top:-60px;
+    left:50%;
+    transform:translateX(-50%);
+    width:100px;
+    height:100px;
+    text-align:center;
 }

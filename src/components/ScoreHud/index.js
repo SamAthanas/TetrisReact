@@ -3,16 +3,18 @@ import styles from "./ScoreHud.module.scss";
 import { delay } from "../../constants/";
 
 export default function ScoreHud({ score }) {
+    const [isMounted,setIsMounted] = useState(false);
     const [scoreDiff,setScoreDiff] = useState(0);
     const [currentScore,setCurrentScore] = useState(0);
     const [animate,setAnimate] = useState(false);
     const [appendScore,setAppendScore] = useState(false);
 
     useEffect( () => {
-        if (score > 0) {
+        if (isMounted) {
             setScoreDiff(score - currentScore);
             addScore();
         }
+        setIsMounted(true);
     },[score]);
 
     const addScore = async () => {
@@ -26,7 +28,7 @@ export default function ScoreHud({ score }) {
     }
 
     return (<>
-        <div score = {`+${scoreDiff}`}
+        <div score = {`${scoreDiff > 0? "+" : ""}${scoreDiff}`}
         className = {`${styles.scoreHud} ${animate && styles.animate} ${appendScore && styles.appendScore} container`}>
             <p>Score: {currentScore}</p>
         </div>

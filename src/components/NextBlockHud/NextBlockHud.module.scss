@@ -1,0 +1,11 @@
+.container {
+    width:100px;
+    height:80px;
+    transform:translateY(-30px);
+    display:grid;
+    place-items:center;
+
+    .containerContent {
+        transform:scale(.5) translate(0,-15px);
+    }
+}

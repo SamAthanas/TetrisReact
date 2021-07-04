@@ -147,6 +147,7 @@ export class TetrisUtility {
     static grid = [];
     
     static initTetrisArray() {
+        TetrisUtility.grid = [];
         for(let i = 0; i < ROW_COUNT;i++) {
             TetrisUtility.grid.push(Array(COLUMN_COUNT).fill(null) );
         }

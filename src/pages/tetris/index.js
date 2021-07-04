@@ -2,6 +2,7 @@ import styles from "./tetris.module.scss";
 import Block from "../../components/block";
 import PauseButton from "../../components/PauseButton";
 import ScoreHud from "../../components/ScoreHud";
+import NextBlockHud from "../../components/NextBlockHud";
 
 import { delay, COLORS, BLOCKS, CANVAS_WIDTH, CANVAS_HEIGHT, BLOCK_SIZE, GRID_SIZE, MOVE_SPEED, MOVE_SPEED_DOWN, MOVE_SPEED_DOWN_FAST, TetrisUtility, ROW_COUNT, COLUMN_COUNT } from "../../constants";
 import { UseKeyPress } from "../../hooks/KeyPress.js";
@@ -10,12 +11,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 //TODO, fix glitch if pressing against placed blocks, shoots up to the top of it, invalid target Y!!!
 //TODO,see if you can generate the rotated X,Y Coordinates for blocks rather then specifying them, could run a function to do it one time?
 
-//!Important!!, Don't spawn a block if there is a block destory animation in progress, delay it
-
 export default function Tetris() {
     const [activeBlocks,setActiveBlocks] = useState(null);
     const [deleteRows,setDeleteRows] = useState([]);
-    
     
     const [ keysDown ] = UseKeyPress();
     
@@ -30,9 +28,19 @@ export default function Tetris() {
     const currentBlockRotateRef = useRef(0);
     const currentBlockData = useRef({});
     const hardDropRef = useRef(0); // 0 = Off, 1 = On, 2 = held (wait for release)
+    const nextBlockRef = useRef([0,"red"]);
 
     const [, updateState] = useState();
     const forceUpdate = useCallback(() => updateState({}), []);
+
+    const restartGame = () => {
+        scoreRef.current = 0;
+        positionYRef.current = 0;
+        scoreRef.current = 0;
+        TetrisUtility.initTetrisArray();
+        selectNextBlock();
+        selectNextBlock();
+    }
 
     useEffect( () => {
         TetrisUtility.initTetrisArray();
@@ -178,14 +186,18 @@ export default function Tetris() {
         }
     }
     
+    const selectNextBlock = () => {
+        //currentBlockIndexRef.current = blockIndex;
+        currentBlockIndexRef.current = nextBlockRef.current[0];
+        colorRef.current = nextBlockRef.current[1];
+        const blockIndex = TetrisUtility.getRandomBlock();
+        const nextColor = COLORS[Math.round(Math.random() * (COLORS.length - 1))];
+        nextBlockRef.current = [blockIndex,nextColor];
+        
+        recalculcateBlocks();
+    }
     useEffect( () => {
 
-        const selectNextBlock = () => {
-            const blockIndex = TetrisUtility.getRandomBlock();
-            currentBlockIndexRef.current = blockIndex;
-
-            recalculcateBlocks();
-        }
 
         const animate = async () => {
             if (!pauseRef.current) {
@@ -273,8 +285,6 @@ export default function Tetris() {
                         TetrisUtility.setGridBlock(displayBlocks[posIndex],...position);
                     }
                     
-                    colorRef.current = COLORS[Math.round(Math.random() * (COLORS.length - 1))];
-                    
                     // Check grid to clear
                     await clearRows();
 
@@ -290,6 +300,7 @@ export default function Tetris() {
         }
         
         selectNextBlock();
+        selectNextBlock();
         animate();
             
         return () => {
@@ -304,10 +315,16 @@ export default function Tetris() {
             
             <div className = {`${styles.container} container`} style = {{width,height}}>
                 <div className = {styles.pauseContainer}>
-                    <PauseButton callback = { paused => pauseRef.current = paused } />
+                    <PauseButton
+                        callback = { paused => pauseRef.current = paused }
+                        restartCallback = { () => restartGame() }
+                    />
                 </div>
                 <div className = {styles.scoreContainer}>
                     <ScoreHud score = {scoreRef.current}/>
+                </div>
+                <div className = {styles.blockContainer}>
+                    <NextBlockHud nextIndex = {nextBlockRef.current[0]} nextColor = {nextBlockRef.current[1]}/>
                 </div>
 
                 <div className = {styles.gameContainer}>

@@ -1,56 +1,71 @@
-.pauseHud {
+.wrapper {
     position:relative;
+    display:flex;
+    flex-direction:row-reverse;
+    min-width:50px;
+    min-height:50px;
 
-    svg {
-        filter:invert(1);
-        display:none;
-
-        &.active {
-            display:block;
-        }
-
-        @keyframes button-appear {
-            0%,100% {
-                transform:scale(1);
-            }
-            
-            50% {
-                transform:scale(1.35);
-            }
-        }
-        animation:button-appear 500ms;
+    & > * {
+        margin-left:10px;
     }
 
+    .pauseHud {
+        position:relative;
+        cursor:pointer;
+        width:50px;
+        height:50px;
 
-    &.pressed::after {
-        content:'';
-        position:absolute;
-        left:50%;
-        top:50%;
-        width:100px;
-        height:100px;
-        background-color:white;
-        transform-origin:top left;
-        border-radius:50%;
-        z-index:-10;
-        opacity:0;
-        
-        @keyframes button-pressed {
-            0% {
-                transform:scale(0.5) translate(-50%,-50%);
-                opacity:0;
+        svg {
+            filter:invert(1);
+            display:none;
+
+            &.active {
+                display:block;
             }
 
-            50% {
-                opacity:.4;
+            @keyframes button-appear {
+                0%,100% {
+                    transform:scale(1);
+                }
+                
+                50% {
+                    transform:scale(1.35);
+                }
             }
-
-            100% {
-                transform:scale(1) translate(-50%,-50%);
-                opacity:0;
-            }
+            animation:button-appear 500ms;
         }
 
-        animation:button-pressed 500ms;
+
+        &.pressed::after {
+            content:'';
+            position:absolute;
+            left:50%;
+            top:50%;
+            width:100px;
+            height:100px;
+            background-color:white;
+            transform-origin:top left;
+            border-radius:50%;
+            z-index:-10;
+            opacity:0;
+            
+            @keyframes button-pressed {
+                0% {
+                    transform:scale(0.5) translate(-50%,-50%);
+                    opacity:0;
+                }
+
+                50% {
+                    opacity:.4;
+                }
+
+                100% {
+                    transform:scale(1) translate(-50%,-50%);
+                    opacity:0;
+                }
+            }
+
+            animation:button-pressed 500ms;
+        }
     }
 }
