@@ -317,7 +317,13 @@ export default function Tetris() {
     },[]);
 
     const width = CANVAS_WIDTH,height = CANVAS_HEIGHT;
-    const scale = TetrisUtility.constrain(window.innerWidth,350,700).map(350,700,0.5,1);
+    let scale = 1;
+    if (typeof window === 'undefined') {
+        global.window = {}
+    } 
+    else {
+        scale = TetrisUtility.constrain(window.innerWidth,350,700).map(350,700,0.5,1);
+    }
 
     return (<>
         <div className = {styles.wrapper}>
