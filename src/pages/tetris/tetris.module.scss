@@ -48,6 +48,7 @@
         color:white;
         opacity:0;
         perspective: 1000px;
+        pointer-events: none;
 
         &.gameover {
             display: none;
