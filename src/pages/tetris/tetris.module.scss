@@ -36,6 +36,58 @@
 
     animation:background-animate 30s alternate infinite;
 
+    .text {
+        position:absolute;
+        text-align:center;
+        padding:20px;
+        background-color:rgba(255, 255, 255, 0.226);
+        border-radius: 10px;
+        box-shadow: 0 0 5px white;
+        backdrop-filter: grayscale(100%);
+        z-index:15;
+        color:white;
+        opacity:0;
+        perspective: 1000px;
+
+        &.gameover {
+            display: none;
+        }
+
+        h1 {
+            margin-bottom:0;
+            text-decoration: underline;
+        }
+
+        p {
+            margin-top:0;
+        }
+
+        svg {
+            width:75px;
+            fill:white;
+        }
+
+        @keyframes intro-animate {
+            0% {
+                opacity: 0;
+                transform: scale(0.2) rotateX(30deg);
+            }
+
+            30%,80% {
+                transform: scale(1);
+                opacity:1;
+                animation-timing-function: cubic-bezier(0.36, 0, 0.66, -0.56);
+            }
+
+            100% {
+                transform:scale(0) rotateX(100deg);
+                opacity:0;
+            }
+        }
+
+        animation: intro-animate 7s;
+    }
+
     .container {
         position:relative;
         transform:translateY(15px);
