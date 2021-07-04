@@ -18,6 +18,7 @@ export default function Tetris() {
     
     const [ keysDown ] = UseKeyPress();
     
+    const tetrisLevelRef = useRef(1);
     const gameOverRef = useRef(false);
     const scoreRef = useRef(0);
     const pauseRef = useRef(false);
@@ -44,6 +45,7 @@ export default function Tetris() {
         selectNextBlock();
         selectNextBlock();
         window.hideControls = false;
+        tetrisLevelRef.current = 1;
     }
 
     useEffect( () => {
@@ -55,7 +57,7 @@ export default function Tetris() {
 
         if (keysDown["32"]) {
             const leftCollisionCheck = TetrisUtility.groundCollisionCheck(positionRef.current + currentBlockData.current.leftOffset,positionYRef.current + currentBlockData.current.topOffset,getBlockArray(1) );
-            const rightCollisionCheck = TetrisUtility.groundCollisionCheck(positionRef.current + currentBlockData.current.rightOffset,positionYRef.current + + currentBlockData.current.bottomOffset,getBlockArray(1) );
+            const rightCollisionCheck = TetrisUtility.groundCollisionCheck(positionRef.current + currentBlockData.current.rightOffset,positionYRef.current + currentBlockData.current.bottomOffset,getBlockArray(1) );
             if (!leftCollisionCheck && !rightCollisionCheck) {
                 currentBlockRotateRef.current = (currentBlockRotateRef.current + 1) % BLOCKS[currentBlockIndexRef.current].length;
                 recalculcateBlocks();
@@ -126,7 +128,7 @@ export default function Tetris() {
     const moveBlocks = useCallback( (target,movingLeft,movingRight) => {
         if (movingRight) {
             if (!rightWallCollisionCheck() ) {
-                if (!TetrisUtility.groundCollisionCheck(positionRef.current + BLOCK_SIZE,positionYRef.current,getBlockArray() )) {
+                if (!TetrisUtility.groundCollisionCheck(positionRef.current + BLOCK_SIZE,positionYRef.current + 12,getBlockArray() )) {
                     positionRef.current += MOVE_SPEED;
                     return;
                 }
@@ -135,7 +137,7 @@ export default function Tetris() {
         
         else if (movingLeft) {
             if (!leftWallCollisionCheck() ) {
-                if (!TetrisUtility.groundCollisionCheck(positionRef.current - BLOCK_SIZE,positionYRef.current,getBlockArray() )) {
+                if (!TetrisUtility.groundCollisionCheck(positionRef.current - BLOCK_SIZE,positionYRef.current + 12,getBlockArray() )) {
                     positionRef.current -= MOVE_SPEED;
                     return;
                 }
@@ -157,6 +159,7 @@ export default function Tetris() {
         }
 
         scoreRef.current += TetrisUtility.getPointsForClearing(rows.length);
+        tetrisLevelRef.current = TetrisUtility.constrain(parseInt(scoreRef.current / 150),1,10);
 
         setDeleteRows([...deleteRows,...rows]);
 
@@ -252,7 +255,7 @@ export default function Tetris() {
                 let collisionOffsets;
                 let dropOffset = 0;
                 do {
-                    collisionOffsets = TetrisUtility.groundCollisionCheck(target,positionYRef.current + BLOCK_SIZE + dropOffset,blockArray);
+                    collisionOffsets = TetrisUtility.groundCollisionCheck(target,positionYRef.current + BLOCK_SIZE + dropOffset - 10,blockArray);
                     if (hardDropRef.current === 1) {
                         dropOffset += BLOCK_SIZE;
                     }
@@ -260,7 +263,7 @@ export default function Tetris() {
                 while(hardDropRef.current === 1 && !collisionOffsets);
                 
                 if (!collisionOffsets) {
-                    positionYRef.current += movingDown ? MOVE_SPEED_DOWN_FAST : MOVE_SPEED_DOWN;
+                    positionYRef.current += movingDown ? MOVE_SPEED_DOWN_FAST : tetrisLevelRef.current.map(1,10,MOVE_SPEED_DOWN,MOVE_SPEED_DOWN_FAST);
                 }
 
                 else if (collisionOffsets[0] === -1) {
