@@ -9,9 +9,6 @@ import { delay, COLORS, BLOCKS, CANVAS_WIDTH, CANVAS_HEIGHT, BLOCK_SIZE, GRID_SI
 import { UseKeyPress } from "../../hooks/KeyPress.js";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-//TODO, fix glitch if pressing against placed blocks, shoots up to the top of it, invalid target Y!!!
-//TODO,see if you can generate the rotated X,Y Coordinates for blocks rather then specifying them, could run a function to do it one time?
-
 export default function Tetris() {
     const [activeBlocks,setActiveBlocks] = useState(null);
     const [deleteRows,setDeleteRows] = useState([]);
@@ -159,7 +156,7 @@ export default function Tetris() {
         }
 
         scoreRef.current += TetrisUtility.getPointsForClearing(rows.length);
-        tetrisLevelRef.current = TetrisUtility.constrain(parseInt(scoreRef.current / 150),1,10);
+        tetrisLevelRef.current = parseInt(TetrisUtility.constrain(scoreRef.current,0,150 * 10).map(0,150 * 20,1,10) );
 
         setDeleteRows([...deleteRows,...rows]);
 
@@ -263,7 +260,7 @@ export default function Tetris() {
                 while(hardDropRef.current === 1 && !collisionOffsets);
                 
                 if (!collisionOffsets) {
-                    positionYRef.current += movingDown ? MOVE_SPEED_DOWN_FAST : tetrisLevelRef.current.map(1,10,MOVE_SPEED_DOWN,MOVE_SPEED_DOWN_FAST);
+                    positionYRef.current += movingDown ? MOVE_SPEED_DOWN_FAST : tetrisLevelRef.current.map(1,10,MOVE_SPEED_DOWN,MOVE_SPEED_DOWN_FAST * 0.68);
                 }
 
                 else if (collisionOffsets[0] === -1) {
